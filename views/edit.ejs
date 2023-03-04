@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="csrf-token" content="<%= csrfToken %>">
+    <script>
+        function editAppointment(id){
+            var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            fetch('/appointment/' + id, {
+                    method: 'PUT',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        _csrf: token,
+                        title: document.getElementById('title').value,
+                        description: document.getElementById('description').value,
+                    })
+                }).then(res => {
+                  // console.log(res);
+                  window.location.href = '/';
+                })
+                .catch(err => console.log(err))
+        }
+    </script>
+</head>
+<body>
+    <div class="grid grid-cols-6">
+        <div class="col-start-3 col-span-2">
+            <h1 class="text-3xl font-semibold">Edit Appointment Details</h1>
+            <br>
+            <p>The Appointment Start Time is : <%= String(appointment.start_time).slice(0, -31) %></p>
+            <br>
+            <p>The Appointment End TIme is : <%= String(appointment.end_time).slice(0, -31) %></p>
+            <br>
+            <div>
+                <div class="relative z-0 w-full mb-6 group">
+                  <input
+                    type="text"
+                    name="title"
+                    id="title"
+                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=" "
+                    required
+                  />
+                  <label
+                    for="title"
+                    class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    >Title</label
+                  >
+                </div>
+                <div class="relative z-0 w-full mb-6 group">
+                  <input
+                    type="description"
+                    name="description"
+                    id="description"
+                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=" "
+                  />
+                  <label
+                    for="description"
+                    class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    >Purpose of the Appointment</label
+                  >
+            </div>
+            <button
+      type="submit"
+      onclick="editAppointment(<%= appointment.id %>)"
+      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-3"
+    >
+      Submit
+    </button>
+  </div>
+        </div>
+    </div>
+</body>
+</html>

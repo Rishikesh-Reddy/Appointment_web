@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><% title %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="csrf-token" content="<%= csrfToken %>">
+    <style>
+      .hideMe {
+          -moz-animation: cssAnimation 0s ease-in 5s forwards;
+          /* Firefox */
+          -webkit-animation: cssAnimation 0s ease-in 5s forwards;
+          /* Safari and Chrome */
+          -o-animation: cssAnimation 0s ease-in 5s forwards;
+          /* Opera */
+          animation: cssAnimation 0s ease-in 5s forwards;
+          -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+      }
+      @keyframes cssAnimation {
+          to {
+              width:0;
+              height:0;
+              overflow:hidden;
+              display: none;
+          }
+      }
+      @-webkit-keyframes cssAnimation {
+          to {
+              width:0;
+              height:0;
+              visibility:hidden;
+              display: none;
+          }
+      }
+  </style>
+    <script>
+      function deleteAppointment(id) {
+        fetch("/appointment/" + id, {
+          method: "DELETE",
+        })
+          .then((res) => window.location.reload())
+          .catch((err) => console.log(err));
+      }
+    </script>
+     <link
+     href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap"
+     rel="stylesheet"
+   />
+   <link
+     rel="stylesheet"
+     href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/index.min.css"
+   />
+   <script>
+     tailwind.config = {
+       darkMode: "class",
+       theme: {
+         fontFamily: {
+           sans: ["Roboto", "sans-serif"],
+           body: ["Roboto", "sans-serif"],
+           mono: ["ui-monospace", "monospace"],
+         },
+       },
+     };
+   </script>
+  </head>
+  <body>
+    <div class="grid grid-cols-6">
+      <div class="col-start-3 col-span-2">
+        <h1 class="text-4xl font-semibold m-4">Appointments</h1>
+        <br /><br />
+        <h2 class="text-2xl font-semibold">Create A new Appointment</h2>
+        <br />
+        <%- include('appointmentForm', {method: 'POST', url: '/appointment'}) %>
+        <div>
+          <div class="hideMe">
+              <% if(messages && messages.error && messages.error.length > 0)  { %>
+                  <ul class="bg-red-100 rounded border border-red-200 border-2 hideMe">
+                      <% for(var i=0; i<messages.error.length; i++) { %>
+                              <li class="text-center hideMe"> <%= messages.error[i] %></li>
+                      <% } %>
+                  </ul>
+              <% } %>
+              <% if(messages && messages.success && messages.success.length > 0)  { %>
+                  <ul class="bg-green-100 rounded border border-green-200 border-2 hideMe">
+                      <% for(var i=0; i<messages.success.length; i++) { %>
+                              <li class="text-center hideMe"> <%= messages.success[i] %></li>
+                      <% } %>
+                  </ul>
+              <% } %>
+              <% if(messages && messages.info && messages.info.length > 0)  { %>
+                  <ul class="bg-blue-100 rounded border border-blue-200 border-2 hideMe">
+                      <% for(var i=0; i<messages.info.length; i++) { %>
+                              <li class="text-center hideMe"> <%= messages.info[i] %></li>
+                      <% } %>
+                  </ul>
+              <% } %>
+          </div>
+      </div>
+      </div>
+      <div class="col-start-2 col-span-4">
+        <br /><br />
+        <div class="overflow-x-auto relative">
+          <table class="w-full text-sm text-left text-gray-500">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+              <tr>
+                <th scope="col" class="py-3 px-6">Appointment Title</th>
+                <th scope="col" class="py-3 px-6">Description</th>
+                <th scope="col" class="py-3 px-6">Start Time</th>
+                <th scope="col" class="py-3 px-6">End Time</th>
+                <th scope="col" class="py-3 px-6">Edit Action</th>
+                <th scope="col" class="py-3 px-6">Delete Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% appointments.forEach(appointment => { %>
+              <tr class="bg-white border-b">
+                <th
+                  scope="row"
+                  class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap"
+                >
+                  <%= appointment.title %>
+                </th>
+                <td class="py-4 px-6"><%= appointment.description %></td>
+                <td class="py-4 px-6">
+                  <%= String(appointment.start_time).slice(0, -31) %>
+                </td>
+                <td class="py-4 px-6">
+                  <%= String(appointment.end_time).slice(0, -31) %>
+                </td>
+                <td class="py-4 px-6">
+                  <a
+                    href="/appointment/<%= appointment.id %>"
+                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                    >Edit</a
+                  >
+                </td>
+                <td class="py-4 px-6">
+                  <a
+                    href=""
+                    onclick="deleteAppointment('<%= appointment.id %>')"
+                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                    >Delete</a
+                  >
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.9/flatpickr.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.9/themes/airbnb.min.css"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js"
+      defer
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/index.min.js"></script>
+  </body>
+</html>

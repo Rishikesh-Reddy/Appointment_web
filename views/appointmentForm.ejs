@@ -1,0 +1,127 @@
+<form
+action="<%= url %>"
+method="<%= method %>"
+class="border p-6 rounded-lg border-gray-900"
+id="appointmentForm"
+onsubmit="return checkSelectedDateisNotpast()"
+>
+<input type="hidden" name="_csrf" value="<%= csrfToken %>">
+<div class="relative z-0 w-full mb-6 group">
+  <input
+    type="text"
+    name="title"
+    id="title"
+    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+    placeholder=" "
+    required
+  />
+  <label
+    for="title"
+    class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+    >Title</label
+  >
+</div>
+<div class="relative z-0 w-full mb-6 group">
+  <input
+    type="description"
+    name="description"
+    id="description"
+    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+    placeholder=" "
+  />
+  <label
+    for="description"
+    class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+    >Purpose of the Appointment</label
+  >
+</div>
+    <div
+      class="relative mb-3 xl:w-96"
+      data-te-datepicker-init
+      data-te-input-wrapper-init
+    >
+      <input
+        type="text"
+        name="appointmentDate"
+        id="appointmentDate"
+        class="peer block min-h-[auto] w-full rounded border-0 bg-transparent py-[0.32rem] px-3 leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+        placeholder="Select a date"
+      />
+      <label
+        for="appointmentDate"
+        class="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.15rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-neutral-200"
+        >Select a date</label
+      >
+    </div>
+    <div
+      class="relative mb-3 xl:w-96"
+      id="starttimepicker-min-time"
+      data-te-input-wrapper-init
+    >
+      <input
+        type="text"
+        name="start_time"
+        class="peer block min-h-[auto] w-full rounded border-0 bg-transparent py-[0.32rem] px-3 leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+        id="start_time"
+      />
+      <label
+        for="start_time"
+        class="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.15rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-neutral-200"
+        >Start time</label
+      >
+    </div>
+    <div
+      class="relative mb-3 xl:w-96"
+      id="endtimepicker-min-time"
+      data-te-input-wrapper-init
+    >
+      <input
+        type="text"
+        name="end_time"
+        class="peer block min-h-[auto] w-full rounded border-0 bg-transparent py-[0.32rem] px-3 leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+        id="start_time"
+      />
+      <label
+        for="end_time"
+        class="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.15rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-neutral-200"
+        >End time</label
+      >
+    </div>
+<button
+  type="submit"
+  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-3"
+>
+  Submit
+</button>
+</form>
+<script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/index.min.js"></script>
+    <script>
+      const pickerStartTime = document.querySelector(
+        "#starttimepicker-min-time"
+      );
+      const starttimepickerMinTime = new te.Timepicker(pickerStartTime, {
+        disabledPast: true,
+      });
+      const pickerEndTime = document.querySelector("#endtimepicker-min-time");
+      const endtimepickerMinTime = new te.Timepicker(pickerEndTime, {
+        disabledPast: true,
+      });
+      function checkSelectedDateisNotpast(){
+        const appointmentDate = document.getElementById("appointmentDate");
+        const start_time_selected = document.getElementById("start_time");
+        const end_time_selected = document.getElementById("end_time");
+        const sdj = new Date(appointmentDate.value);
+        const start_time = new Date(appointmentDate.value + ' ' + start_time_selected.value);
+        const end_time = new Date(appointmentDate.value + ' ' + end_time_selected.value);
+        const today = new Date();
+        if ((start_time > today) && (end_time > today) && (start_time < end_time)) {
+          alert("Please select a valid time from the future");
+          appointmentDate.value = "";
+          document.getElementById("appointmentDate").focus();
+          return false
+        }
+        else{
+          return true
+        }
+      }
+    </script>
