@@ -39,6 +39,7 @@ onsubmit="return checkSelectedDateisNotpast()"
       class="relative mb-3 xl:w-96"
       data-te-datepicker-init
       data-te-input-wrapper-init
+      data-te-format="mm/dd/yyyy"
     >
       <input
         type="text"
@@ -110,7 +111,6 @@ onsubmit="return checkSelectedDateisNotpast()"
         const appointmentDate = document.getElementById("appointmentDate");
         const start_time_selected = document.getElementById("start_time");
         const end_time_selected = document.getElementById("end_time");
-        const sdj = new Date(appointmentDate.value);
         const start_time = new Date(appointmentDate.value + ' ' + start_time_selected.value);
         const end_time = new Date(appointmentDate.value + ' ' + end_time_selected.value);
         const today = new Date();

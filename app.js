@@ -4,6 +4,7 @@ const flash = require("connect-flash");
 const session = require("express-session");
 const csrf = require("tiny-csrf");
 const cookieParser = require("cookie-parser");
+const { Op } = require("sequelize");
 
 
 
@@ -27,25 +28,40 @@ app.use(function (request, response, next) {
     response.locals.messages = request.flash();
     next();
   });
-app.set('view engine', 'ejs');  
+app.set('view engine', 'ejs');
 
 
 app.get('/', async (req, res) => {
-    const appointments = await Appointment.findAll({});
-    res.render('index', { title: 'Appointment | Home', appointments: appointments, csrfToken: req.csrfToken() });
+    const appointments = await Appointment.findAll({
+      where: {
+        start_time: {
+          [Op.gte]: new Date(new Date().getTime() + (330)*60000)
+        }
+      },
+      order: [['start_time', 'ASC']]
+    });
+    if (req.accepts("html")){
+      res.render('index', { title: 'Appointment | Home', appointments: appointments, csrfToken: req.csrfToken() });
+    }
+    else{
+      res.status(200).json({
+        appointments,
+        csrfToken: req.csrfToken()
+      });
+    }
 })
 
 app.post('/appointment', async (req, res) => {
     var { title, description, start_time, end_time, appointmentDate } = req.body;
+    const today = new Date()
+    // console.log(req.body, new Date(appointmentDate), today)
     start_time = new Date(appointmentDate + ' ' + start_time);
     end_time = new Date(appointmentDate + ' ' + end_time);
-    const today = new Date();
     if ((start_time > today) && (end_time > today) && (start_time < end_time)) {
      await Appointment.create({ title, description, start_time, end_time });
     }
     else{
         req.flash('error', 'Select an appropriate time that is appropriate!!!')
-        console.log('error');
     }
     res.redirect('/');
 })
@@ -53,7 +69,7 @@ app.post('/appointment', async (req, res) => {
 app.delete('/appointment/:id', async (req, res) => {
     const { id } = req.params;
     await Appointment.destroy({ where: { id } });
-    res.redirect('/');
+    res.status(200).send('success');
 })
 
 app.get('/appointment/:id', async (req, res) => {

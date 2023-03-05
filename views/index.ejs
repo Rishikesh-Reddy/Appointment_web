@@ -38,8 +38,15 @@
   </style>
     <script>
       function deleteAppointment(id) {
+        var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         fetch("/appointment/" + id, {
           method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            _csrf: token
+          })
         })
           .then((res) => window.location.reload())
           .catch((err) => console.log(err));
