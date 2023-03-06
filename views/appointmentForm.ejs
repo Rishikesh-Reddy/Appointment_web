@@ -6,6 +6,7 @@
   onsubmit="return validateForm()"
 >
   <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+  <input type="hidden" name="checkOverlap" value="<%= checkOverlap %>" />
   <div class="relative z-0 w-full mb-6 group">
     <input
       type="text"
@@ -14,6 +15,7 @@
       class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
       placeholder=" "
       required
+      value="<%= title %>"
     />
     <label
       for="title"
@@ -28,6 +30,7 @@
       id="description"
       class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
       placeholder=" "
+      value="<%= description %>"
     />
     <label
       for="description"
@@ -47,6 +50,8 @@
       id="appointmentDate"
       class="peer block min-h-[auto] w-full rounded border-0 bg-transparent py-[0.32rem] px-3 leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
       placeholder="Select a date"
+      required
+      value="<%= appointmentDate %>"
     />
     <label
       for="appointmentDate"
@@ -65,6 +70,7 @@
       class="peer block min-h-[auto] w-full rounded border-0 bg-transparent py-[0.32rem] px-3 leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
       id="start_time"
       required
+      value="<%= start_time %>"
     />
     <label
       for="start_time"
@@ -83,6 +89,7 @@
       class="peer block min-h-[auto] w-full rounded border-0 bg-transparent py-[0.32rem] px-3 leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
       id="end_time"
       required
+      value="<%= end_time %>"
     />
     <label
       for="end_time"
@@ -90,12 +97,26 @@
       >End time</label
     >
   </div>
-  <button
+  <div class="flex gap-x-6">
+    <button
     type="submit"
     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-3"
   >
-    Submit
+    <% if (checkOverlap) { %>
+      Book Appointment
+    <% } else { %>
+      Delete and Book Appointment
+    <% } %>
   </button>
+  <% if (!checkOverlap) { %>
+    <button
+    onclick="return dontDelete()"
+    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-3"
+  >
+    No Thank You
+  </button>
+<% } %>
+  </div>
 </form>
 <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/index.min.js"></script>
 <script>
@@ -115,5 +136,9 @@
       return false;
     }
     return true;
+  }
+  function dontDelete() {
+    window.location.href = '/';
+    return false;
   }
 </script>

@@ -9,13 +9,13 @@
     <meta name="csrf-token" content="<%= csrfToken %>">
     <style>
       .hideMe {
-          -moz-animation: cssAnimation 0s ease-in 10s forwards;
+          -moz-animation: cssAnimation 0s ease-in 5s forwards;
           /* Firefox */
-          -webkit-animation: cssAnimation 0s ease-in 10s forwards;
+          -webkit-animation: cssAnimation 0s ease-in 5s forwards;
           /* Safari and Chrome */
-          -o-animation: cssAnimation 0s ease-in 10s forwards;
+          -o-animation: cssAnimation 0s ease-in 5s forwards;
           /* Opera */
-          animation: cssAnimation 0s ease-in 10s forwards;
+          animation: cssAnimation 0s ease-in 5s forwards;
           -webkit-animation-fill-mode: forwards;
           animation-fill-mode: forwards;
       }
@@ -139,10 +139,10 @@
                 <td class="py-4 px-6"><%= appointment.description %></td>
                 <td class="py-4 px-6"><%= new Date(appointment.start_time).toDateString() %></td>
                 <td class="py-4 px-6">
-                  <%= new Date(appointment.start_time).toLocaleTimeString() %>
+                  <%= new Date(appointment.start_time).toTimeString().slice(0, 8) %>
                 </td>
                 <td class="py-4 px-6">
-                  <%= new Date(appointment.end_time).toLocaleTimeString() %>
+                  <%= new Date(appointment.end_time).toTimeString().slice(0, 8) %>
                 </td>
                 <td class="py-4 px-6">
                   <a
