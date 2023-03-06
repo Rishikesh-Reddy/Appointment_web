@@ -5,6 +5,7 @@ const session = require("express-session");
 const csrf = require("tiny-csrf");
 const cookieParser = require("cookie-parser");
 const { Op } = require("sequelize");
+const { btoa, atob } = require("./utils/index.js");
 
 const app = express();
 app.use(express.urlencoded({ extended: false }));
