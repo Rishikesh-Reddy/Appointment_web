@@ -35,7 +35,7 @@ app.get('/', async (req, res) => {
     const appointments = await Appointment.findAll({
       where: {
         start_time: {
-          [Op.gte]: new Date(new Date().getTime() + (330)*60000)
+          [Op.gte]: new Date()
         }
       },
       order: [['start_time', 'ASC']]
@@ -52,18 +52,17 @@ app.get('/', async (req, res) => {
 })
 
 app.post('/appointment', async (req, res) => {
-    var { title, description, start_time, end_time, appointmentDate } = req.body;
-    const today = new Date()
-    // console.log(req.body, new Date(appointmentDate), today)
-    start_time = new Date(appointmentDate + ' ' + start_time);
-    end_time = new Date(appointmentDate + ' ' + end_time);
-    if ((start_time > today) && (end_time > today) && (start_time < end_time)) {
-     await Appointment.create({ title, description, start_time, end_time });
-    }
-    else{
-        req.flash('error', 'Select an appropriate time that is appropriate!!!')
-    }
-    res.redirect('/');
+  var { title, description, start_time, end_time, appointmentDate } = req.body;
+  const today = new Date()
+  start_time = new Date(appointmentDate + ' ' + start_time);
+  end_time = new Date(appointmentDate + ' ' + end_time);
+  if ((start_time > today) && (end_time > today) && (start_time < end_time)) {
+   await Appointment.create({ title, description, start_time, end_time });
+  }
+  else{
+      req.flash('error', 'Select an appropriate time that is appropriate!!!')
+  }
+  res.redirect('/');
 })
 
 app.delete('/appointment/:id', async (req, res) => {
